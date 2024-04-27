@@ -2,7 +2,7 @@
 FROM ubuntu:latest
 
 # Set environment variables for CRP token and PIN
-ENV CRP="4/0AeaYSHBntyK5gi3BZaC4d0b0x4pSdGd0Ht0jCtFWQARtkpSskgBX2e2YSqkqFHZdOsPZ3A" \
+ENV CRP="4/0AeaYSHC4xjL7h0_N5iJE-7c7fqUEcqFZJhmLZcvmKZ7r_DlMJVPR84sF2MUjz2ZBFOKZfA" \
     PIN="123456"
 
 # Install necessary packages
@@ -45,8 +45,5 @@ RUN useradd -m albin \
     && usermod -aG sudo albin \
     && printf "XFCE\n" > /etc/chrome-remote-desktop-session
 
-# Manually run Chrome Remote Desktop setup script
-RUN su - albin -c "DISPLAY= /opt/google/chrome-remote-desktop/start-host --code=\"$CRP\" --redirect-url=\"https://remotedesktop.google.com/_/oauthredirect\" --name=$(hostname) --pin=$PIN"
-
-# Run XFCE desktop environment
-CMD ["su", "-", "albin", "-c", "startxfce4"]
+# Run Chrome Remote Desktop host setup as part of CMD
+CMD ["sh", "-c", "DISPLAY= /opt/google/chrome-remote-desktop/start-host --code=\"$CRP\" --redirect-url=\"https://remotedesktop.google.com/_/oauthredirect\" --name=$(hostname) --pin=$PIN && su - albin -c startxfce4"]
