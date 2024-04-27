@@ -2,7 +2,7 @@
 FROM ubuntu:latest
 
 # Set environment variables for CRP token and PIN
-ENV CRP="DISPLAY= /opt/google/chrome-remote-desktop/start-host --code=\"4/0AeaYSHB5wY56cqClqrfjRlrH3DuoxfgJtfGVR5StblT3JF9SXVjCaMbJRKt_e9zedDrCLQ\" --redirect-url=\"https://remotedesktop.google.com/_/oauthredirect\" --name=$(hostname)" \
+ENV CRP="DISPLAY= /opt/google/chrome-remote-desktop/start-host --code="4/0AeaYSHBntyK5gi3BZaC4d0b0x4pSdGd0Ht0jCtFWQARtkpSskgBX2e2YSqkqFHZdOsPZ3A" --redirect-url="https://remotedesktop.google.com/_/oauthredirect" --name=$(hostname)" \
     PIN="123456"
 
 # Install necessary packages
