@@ -2,7 +2,7 @@
 FROM ubuntu:latest
 
 # Set environment variables for CRP token and PIN
-ENV CRP="4/0AeaYSHDr_tGnGOn5AZgHT-Xk9ZfU_UBUfBWTAIzeGATVUlxNbFzmOqDB9dbmZCUPsdLwew" \
+ENV CRP="4/0AeaYSHB5wY56cqClqrfjRlrH3DuoxfgJtfGVR5StblT3JF9SXVjCaMbJRKt_e9zedDrCLQ" \
     Pin="123456"
 
 # Install necessary packages
