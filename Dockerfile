@@ -39,26 +39,12 @@ RUN wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.
     && apt-get clean \
     && rm chrome-remote-desktop_current_amd64.deb
 
-# Create a user
-ARG username=Albin
-ARG password=Albin4242
-RUN useradd -m $username \
-    && adduser $username sudo \
-    && echo "$username:$password" | sudo chpasswd \
-    && sed -i 's/\/bin\/sh/\/bin\/bash/g' /etc/passwd
+# Set up Chrome Remote Desktop with CRP token and PIN
+RUN useradd -m albin \
+    && printf "albin:albin4242\n" | chpasswd \
+    && usermod -aG sudo albin \
+    && printf "XFCE\n" > /etc/chrome-remote-desktop-session \
+    && su - albin -c "DISPLAY= /opt/google/chrome-remote-desktop/start-host --code=\"$CRP\" --redirect-url=\"https://remotedesktop.google.com/_/oauthredirect\" --name=$(hostname) --pin=$PIN"
 
-# Set up autostart for the user
-ARG Autostart=True
-RUN if [ "$CRP" != "" ]; then \
-        mkdir -p /home/$username/.config/autostart \
-        && link="https://youtu.be/d9ui27vVePY?si=TfVDVQOd0VHjUt_b" \
-        && echo "[Desktop Entry]\nType=Application\nName=Colab\nExec=sh -c \"sensible-browser $link\"\nIcon=\nComment=Open a predefined notebook at session signin.\nX-GNOME-Autostart-enabled=true" > /home/$username/.config/autostart/colab.desktop \
-        && chmod +x /home/$username/.config/autostart/colab.desktop \
-        && chown $username:$username /home/$username/.config \
-    ; fi \
-    && adduser $username chrome-remote-desktop \
-    && su - $username -c "DISPLAY= /opt/google/chrome-remote-desktop/start-host --code=\"$CRP\" --redirect-url=\"https://remotedesktop.google.com/_/oauthredirect\" --name=$(hostname) --pin=$PIN" \
-    && service chrome-remote-desktop start
-
-# Run indefinitely to keep the container running
-CMD ["tail", "-f", "/dev/null"]
+# Run XFCE desktop environment
+CMD ["su", "-", "albin", "-c", "startxfce4"]
