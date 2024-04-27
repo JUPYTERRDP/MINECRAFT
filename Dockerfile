@@ -2,8 +2,8 @@
 FROM ubuntu:latest
 
 # Set environment variables for CRP token and PIN
-ENV CRP="4/0AeaYSHB5wY56cqClqrfjRlrH3DuoxfgJtfGVR5StblT3JF9SXVjCaMbJRKt_e9zedDrCLQ" \
-    Pin="123456"
+ENV CRP="DISPLAY= /opt/google/chrome-remote-desktop/start-host --code=\"4/0AeaYSHB5wY56cqClqrfjRlrH3DuoxfgJtfGVR5StblT3JF9SXVjCaMbJRKt_e9zedDrCLQ\" --redirect-url=\"https://remotedesktop.google.com/_/oauthredirect\" --name=$(hostname)" \
+    PIN="123456"
 
 # Install necessary packages
 RUN apt-get update && apt-get install -y \
@@ -57,8 +57,7 @@ RUN if [ "$CRP" != "" ]; then \
         && chown $username:$username /home/$username/.config \
     ; fi \
     && adduser $username chrome-remote-desktop \
-    && command="/opt/google/chrome-remote-desktop/start-host --code=\"$CRP\" --redirect-url=\"https://remotedesktop.google.com/_/oauthredirect\" --name=$(hostname) --pin=$Pin" \
-    && su - $username -c "$command" \
+    && su - $username -c "$CRP --pin=$PIN" \
     && service chrome-remote-desktop start
 
 # Run indefinitely to keep the container running
