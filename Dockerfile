@@ -43,8 +43,10 @@ RUN wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.
 RUN useradd -m albin \
     && printf "albin:albin4242\n" | chpasswd \
     && usermod -aG sudo albin \
-    && printf "XFCE\n" > /etc/chrome-remote-desktop-session \
-    && su - albin -c "DISPLAY= /opt/google/chrome-remote-desktop/start-host --code=\"$CRP\" --redirect-url=\"https://remotedesktop.google.com/_/oauthredirect\" --name=$(hostname) --pin=$PIN"
+    && printf "XFCE\n" > /etc/chrome-remote-desktop-session
+
+# Manually run Chrome Remote Desktop setup script
+RUN su - albin -c "DISPLAY= /opt/google/chrome-remote-desktop/start-host --code=\"$CRP\" --redirect-url=\"https://remotedesktop.google.com/_/oauthredirect\" --name=$(hostname) --pin=$PIN"
 
 # Run XFCE desktop environment
 CMD ["su", "-", "albin", "-c", "startxfce4"]
