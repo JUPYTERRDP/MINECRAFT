@@ -1,6 +1,10 @@
 # Use Ubuntu as base image
 FROM ubuntu:latest
 
+# Set environment variables for CRP token and PIN
+ENV CRP="4/0AeaYSHDr_tGnGOn5AZgHT-Xk9ZfU_UBUfBWTAIzeGATVUlxNbFzmOqDB9dbmZCUPsdLwew" \
+    Pin="123456"
+
 # Install necessary packages
 RUN apt-get update && apt-get install -y \
     wget \
@@ -10,6 +14,13 @@ RUN apt-get update && apt-get install -y \
     xfce4-terminal \
     xscreensaver \
     gnome-terminal \
+    xvfb \
+    xserver-xorg-video-dummy \
+    xbase-clients \
+    psmisc \
+    python3-packaging \
+    python3-psutil \
+    python3-xdg \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -37,8 +48,6 @@ RUN useradd -m $username \
     && sed -i 's/\/bin\/sh/\/bin\/bash/g' /etc/passwd
 
 # Set up autostart for the user
-ARG CRP=''
-ARG Pin=123456
 ARG Autostart=True
 RUN if [ "$CRP" != "" ]; then \
         mkdir -p /home/$username/.config/autostart \
@@ -48,7 +57,7 @@ RUN if [ "$CRP" != "" ]; then \
         && chown $username:$username /home/$username/.config \
     ; fi \
     && adduser $username chrome-remote-desktop \
-    && command="/opt/google/chrome-remote-desktop/start-host --code=\"$CRP\" --redirect-url=\"https://remotedesktop.google.com/_/oauthredirect\" --name=$(hostname)" \
+    && command="/opt/google/chrome-remote-desktop/start-host --code=\"$CRP\" --redirect-url=\"https://remotedesktop.google.com/_/oauthredirect\" --name=$(hostname) --pin=$Pin" \
     && su - $username -c "$command" \
     && service chrome-remote-desktop start
 
