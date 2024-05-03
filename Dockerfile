@@ -33,7 +33,6 @@ RUN apt-get update && apt-get install -y \
     libnss3 \
     libnspr4 \
     libgtk-3-0 \
-    libasound2 \
     libxss1 \
     libxtst6 \
     lsb-release \
@@ -48,7 +47,7 @@ RUN apt-get update && apt-get install -y \
 
 # Download and install Chrome
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
+    && echo "deb http://dl.google.com/linux/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
     && apt-get update \
     && apt-get install -y google-chrome-stable \
     && apt-get clean \
