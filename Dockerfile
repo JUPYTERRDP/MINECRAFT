@@ -1,49 +1,74 @@
-# Use Ubuntu as base image
+# Use an official Ubuntu runtime as the base image
 FROM ubuntu:latest
 
-# Set environment variables for CRP token and PIN
-ENV CRP="4/0AeaYSHAmDpzbbTnmSxZUiz4R-kEShR0HPZst-W2R_IRKFFtQ9XCh4SiCrlqfwhTFNDvCtw" \
-    PIN="123456"
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Install necessary packages
 RUN apt-get update && apt-get install -y \
     wget \
-    sudo \
+    gnupg \
+    apt-utils \
     xfce4 \
+    xfce4-goodies \
     desktop-base \
     xfce4-terminal \
-    xscreensaver \
-    gnome-terminal \
+    dbus-x11 \
+    supervisor \
+    x11vnc \
     xvfb \
-    xserver-xorg-video-dummy \
-    xbase-clients \
-    psmisc \
-    python3-packaging \
-    python3-psutil \
-    python3-xdg \
+    firefox \
+    tigervnc-standalone-server \
+    tigervnc-common \
+    xfonts-base \
+    xfonts-100dpi \
+    xfonts-75dpi \
+    xfonts-scalable \
+    xfonts-cyrillic \
+    x11-apps \
+    dbus \
+    dbus-x11 \
+    x11-utils \
+    fonts-liberation \
+    libnss3 \
+    libnspr4 \
+    libgtk-3-0 \
+    libasound2 \
+    libxss1 \
+    libxtst6 \
+    lsb-release \
+    libappindicator3-1 \
+    xdg-utils \
+    curl \
+    iproute2 \
+    procps \
+    unzip \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Install Google Chrome
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - \
-    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list \
+# Download and install Chrome
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
     && apt-get update \
     && apt-get install -y google-chrome-stable \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Install Chrome Remote Desktop
+# Download and install Chrome Remote Desktop
 RUN wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb \
-    && dpkg --install chrome-remote-desktop_current_amd64.deb \
-    && apt-get install -y --fix-broken \
+    && dpkg -i chrome-remote-desktop_current_amd64.deb \
+    && apt-get install -f \
     && apt-get clean \
-    && rm chrome-remote-desktop_current_amd64.deb
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    && adduser chrome-remote-desktop audio
 
-# Set up Chrome Remote Desktop with CRP token and PIN
-RUN useradd -m albin \
-    && printf "albin:albin4242\n" | chpasswd \
-    && usermod -aG sudo albin \
-    && printf "XFCE\n" > /etc/chrome-remote-desktop-session
+# Install GitHub repository files
+COPY . /app
+WORKDIR /app
 
-# Run Chrome Remote Desktop host setup as part of CMD
-CMD ["sh", "-c", "DISPLAY= /opt/google/chrome-remote-desktop/start-host --code=\"$CRP\" --redirect-url=\"https://remotedesktop.google.com/_/oauthredirect\" --name=$(hostname) --pin=$PIN && su - albin -c startxfce4"]
+# Expose necessary ports
+EXPOSE 5900
+EXPOSE 22
+
+# Start Chrome Remote Desktop and SSH
+CMD ["/bin/bash", "/app/startup.sh"]
