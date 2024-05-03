@@ -42,6 +42,9 @@ RUN apt-get update && apt-get install -y \
     iproute2 \
     procps \
     unzip \
+    xserver-xorg-video-dummy \
+    xbase-clients \
+    python3-packaging \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
