@@ -59,10 +59,10 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
 # Download and install Chrome Remote Desktop
 RUN wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb \
     && dpkg -i chrome-remote-desktop_current_amd64.deb \
+    && useradd -m chrome-remote-desktop \
     && apt-get install -f \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-    && adduser chrome-remote-desktop audio
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install GitHub repository files
 COPY . /app
