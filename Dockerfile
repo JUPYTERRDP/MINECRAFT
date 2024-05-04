@@ -63,13 +63,9 @@ RUN wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Install GitHub repository files
-COPY . /app
-WORKDIR /app
-
 # Expose necessary ports
 EXPOSE 5900
 EXPOSE 22
 
 # Start Chrome Remote Desktop and SSH
-CMD ["/bin/bash", "/app/startup.sh"]
+CMD ["/bin/bash"]
