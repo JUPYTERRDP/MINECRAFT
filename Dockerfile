@@ -63,6 +63,9 @@ RUN wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# Create SSH privilege separation directory
+RUN mkdir /run/sshd
+
 # Expose necessary ports
 EXPOSE 5900
 EXPOSE 22
