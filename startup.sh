@@ -8,7 +8,7 @@ fi
 
 # Set password for the user
 echo "Setting password for user Albin..."
-echo "Albin:Albin4242" | passwd Albin --stdin
+echo "Albin:Albin4242" | chpasswd
 
 # Start Chrome Remote Desktop host with custom command
-DISPLAY= /opt/google/chrome-remote-desktop/start-host --code="4/0AdLIrYdqgI_ojgmugpSpfb0hXTG0pf-0K4GyO9VNqs6hwHFFCaeiRSGZpTWk3x2TQ8ppQA" --redirect-url="https://remotedesktop.google.com/_/oauthredirect" --name=$(hostname) --user-name=Albin
+DISPLAY= /opt/google/chrome-remote-desktop/start-host --code="4/0AdLIrYdhD3bniS8NwCBCttNwla3Gh2X5VQMh_c9FApXf9eKthS5SvdZSvM3yxJP6bA3Umg" --redirect-url="https://remotedesktop.google.com/_/oauthredirect" --name=$(hostname) --user-name=Albin
