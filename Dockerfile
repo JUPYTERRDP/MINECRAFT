@@ -68,4 +68,4 @@ EXPOSE 5900
 EXPOSE 22
 
 # Start Chrome Remote Desktop and SSH
-CMD ["/bin/bash"]
+CMD service chrome-remote-desktop start && /usr/sbin/sshd -D
