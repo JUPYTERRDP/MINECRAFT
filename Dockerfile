@@ -11,7 +11,6 @@ RUN apt-get update && apt-get install -y \
     gdebi-core \
     fonts-noto-color-emoji \
     libappindicator3-1 \
-    libasound2 \
     libatk-bridge2.0-0 \
     libatspi2.0-0 \
     libcairo2 \
