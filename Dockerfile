@@ -1,6 +1,9 @@
 # Use an appropriate base image for your Linux distribution
 FROM ubuntu:latest
 
+# Add the missing public key
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
+
 # Add a repository that provides libasound2
 RUN echo "deb http://archive.ubuntu.com/ubuntu bionic main universe" >> /etc/apt/sources.list
 
