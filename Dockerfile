@@ -1,6 +1,9 @@
 # Use an appropriate base image for your Linux distribution
 FROM ubuntu:latest
 
+# Add a repository that provides libasound2
+RUN echo "deb http://archive.ubuntu.com/ubuntu bionic main universe" >> /etc/apt/sources.list
+
 # Install required packages
 RUN apt-get update && apt-get install -y \
     xrdp \
