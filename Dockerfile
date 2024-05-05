@@ -8,7 +8,6 @@ RUN apt-get update && apt-get install -y \
     xfce4-goodies \
     firefox \
     wget \
-    gdebi-core \
     fonts-noto-color-emoji \
     libappindicator3-1 \
     libatk-bridge2.0-0 \
@@ -33,11 +32,9 @@ RUN apt-get update && apt-get install -y \
 
 # Download and install Chrome
 RUN wget -q -O chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
-    gdebi -n chrome.deb && \
+    dpkg -i chrome.deb && \
+    apt-get install -f && \
     rm chrome.deb
-
-# Install libasound2
-RUN apt-get install -y libasound2
 
 # Expose RDP port
 EXPOSE 3389
