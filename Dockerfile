@@ -38,11 +38,17 @@ RUN apt-get update && apt-get install -y \
 # Import the missing public key
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
 
-# Download and install Chrome
-RUN wget -q -O chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
-    dpkg -i chrome.deb && \
-    apt-get install -f && \
-    rm chrome.deb
+# Download Chrome
+RUN wget -q -O chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+
+# Install Chrome
+RUN dpkg -i chrome.deb || true
+
+# Install any missing dependencies
+RUN apt-get install -f -y
+
+# Clean up
+RUN rm chrome.deb
 
 # Expose RDP port
 EXPOSE 3389
