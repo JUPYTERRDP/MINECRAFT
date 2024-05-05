@@ -28,6 +28,10 @@ RUN apt-get update && apt-get install -y \
     libxss1 \
     libxtst6 \
     xdg-utils \
+    fonts-liberation \
+    libasound2 \
+    libu2f-udev \
+    libvulkan1 \
     --no-install-recommends
 
 # Download and install Chrome
