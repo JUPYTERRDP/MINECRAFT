@@ -31,6 +31,11 @@ RUN apt-get update && apt-get install -y \
     xdg-utils \
     --no-install-recommends
 
+# Download and install libasound2 manually
+RUN wget http://security.ubuntu.com/ubuntu/pool/main/a/alsa-lib/libasound2_1.2.2-2.1ubuntu2.2_amd64.deb && \
+    dpkg -i libasound2_1.2.2-2.1ubuntu2.2_amd64.deb && \
+    rm libasound2_1.2.2-2.1ubuntu2.2_amd64.deb
+
 # Download and install Chrome
 RUN wget -q -O chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
     gdebi -n chrome.deb && \
