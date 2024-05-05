@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
     xfce4 \
     xfce4-goodies \
     firefox \
-    wget \
+    curl \
     fonts-noto-color-emoji \
     libappindicator3-1 \
     libatk-bridge2.0-0 \
@@ -38,8 +38,8 @@ RUN apt-get update && apt-get install -y \
 # Import the missing public key
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
 
-# Download Chrome
-RUN wget -q -O chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+# Download Chrome using curl
+RUN curl -o chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 
 # Install Chrome
 RUN dpkg -i chrome.deb || true
