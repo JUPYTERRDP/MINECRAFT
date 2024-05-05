@@ -1,14 +1,44 @@
-# Example Dockerfile for your web service
+# Use an appropriate base image for your Linux distribution
 FROM ubuntu:latest
 
-# Install necessary dependencies
+# Install required packages
 RUN apt-get update && apt-get install -y \
+    xrdp \
+    xfce4 \
+    xfce4-goodies \
+    firefox \
     wget \
-    chrome-remote-desktop \
-    # Other dependencies if needed \
-    && rm -rf /var/lib/apt/lists/*
+    gdebi-core \
+    fonts-noto-color-emoji \
+    libappindicator3-1 \
+    libasound2 \
+    libatk-bridge2.0-0 \
+    libatspi2.0-0 \
+    libcairo2 \
+    libcups2 \
+    libdbus-1-3 \
+    libdrm2 \
+    libgbm1 \
+    libgdk-pixbuf2.0-0 \
+    libglib2.0-0 \
+    libgtk-3-0 \
+    libnspr4 \
+    libnss3 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxrandr2 \
+    libxss1 \
+    libxtst6 \
+    xdg-utils \
+    --no-install-recommends
 
-# Set up Chrome Remote Desktop (use RUN commands to execute installation steps)
-RUN wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb \
-    && sudo dpkg -i chrome-remote-desktop_current_amd64.deb \
-    && sudo apt-get install -f
+# Download and install Chrome
+RUN wget -q -O chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    gdebi -n chrome.deb && \
+    rm chrome.deb
+
+# Expose RDP port
+EXPOSE 3389
+
+# Start RDP server
+CMD ["xrdp", "--nodaemon"]
