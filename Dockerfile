@@ -1,5 +1,5 @@
-# Use an appropriate base image for your Linux distribution
-FROM ubuntu:latest
+# Use Ubuntu 18.04 as the base image
+FROM ubuntu:18.04
 
 # Install required packages
 RUN apt-get update && apt-get install -y \
@@ -35,14 +35,8 @@ RUN apt-get update && apt-get install -y \
     libvulkan1 \
     --no-install-recommends
 
-# Add a repository that provides libasound2
-RUN echo "deb http://archive.ubuntu.com/ubuntu bionic main universe" >> /etc/apt/sources.list
-
 # Import the missing public key
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
-
-# Update package lists
-RUN apt-get update
 
 # Download and install Chrome
 RUN wget -q -O chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
