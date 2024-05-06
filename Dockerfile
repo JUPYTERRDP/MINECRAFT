@@ -1,57 +1,26 @@
-# Use Ubuntu 18.04 as the base image
-FROM ubuntu:18.04
+FROM python:3.10
 
-# Install required packages
+WORKDIR /app
+
+# Install dependencies
+RUN pip install --no-cache-dir notebook
+
+# Install R and required packages
 RUN apt-get update && apt-get install -y \
-    gnupg \
-    xrdp \
-    xfce4 \
-    xfce4-goodies \
-    firefox \
-    curl \
-    fonts-noto-color-emoji \
-    libappindicator3-1 \
-    libatk-bridge2.0-0 \
-    libatspi2.0-0 \
-    libcairo2 \
-    libcups2 \
-    libdbus-1-3 \
-    libdrm2 \
-    libgbm1 \
-    libgdk-pixbuf2.0-0 \
-    libglib2.0-0 \
-    libgtk-3-0 \
-    libnspr4 \
-    libnss3 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxrandr2 \
-    libxss1 \
-    libxtst6 \
-    xdg-utils \
-    fonts-liberation \
-    libasound2 \
-    libu2f-udev \
-    libvulkan1 \
-    ca-certificates \
-    --no-install-recommends
+    r-base \
+    r-recommended \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libxml2-dev && \
+    R -e "install.packages(c('IRkernel', 'tidyverse'))" && \
+    R -e "IRkernel::installspec()"
 
-# Import the missing public key
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
+# Download and extract ngrok
+RUN wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz && \
+    tar -xvf ngrok-v3-stable-linux-amd64.tgz
 
-# Verify xrdp configuration
-RUN cat /etc/xrdp/xrdp.ini
-RUN cat /etc/xrdp/sesman.ini
+# Set ngrok authtoken
+RUN ./ngrok authtoken 2fwBohPj2o7roLuwnKT6sJxHHjv_4GtVBAwypzJ7wkbmYsFtW
 
-# Update xrdp
-RUN apt-get install --only-upgrade -y xrdp
-
-# Check xrdp logs
-RUN cat /var/log/xrdp.log
-RUN cat /var/log/xrdp-sesman.log
-
-# Expose RDP port
-EXPOSE 3389
-
-# Start RDP server
-CMD ["xrdp", "--nodaemon"]
+# Set command to run on container start
+CMD ./ngrok http 8888 & python3 -m notebook --ip=0.0.0.0 --allow-root
