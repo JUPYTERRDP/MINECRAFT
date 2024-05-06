@@ -1,6 +1,0 @@
-services:
-  - name: linux-rdp
-    env: docker
-    buildCommand: docker build -t linux-rdp-image .
-    startCommand: docker run -p 3389:3389 linux-rdp-image
-    healthCheckPath: /var/log/xrdp.log
