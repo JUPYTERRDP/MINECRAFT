@@ -33,6 +33,7 @@ RUN apt-get update && apt-get install -y \
     libasound2 \
     libu2f-udev \
     libvulkan1 \
+    ca-certificates \
     --no-install-recommends
 
 # Import the missing public key
