@@ -11,7 +11,10 @@ RUN apt-get update && apt-get install -y \
     r-recommended \
     libcurl4-openssl-dev \
     libssl-dev \
-    libxml2-dev && \
+    libxml2-dev \
+    libfribidi-dev \
+    libharfbuzz-dev \
+    libfreetype-dev && \
     R -e "install.packages(c('IRkernel', 'tidyverse'))" && \
     R -e "IRkernel::installspec()"
 
@@ -20,7 +23,7 @@ RUN wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz &&
     tar -xvf ngrok-v3-stable-linux-amd64.tgz
 
 # Set ngrok authtoken
-RUN ./ngrok authtoken 2fwBohPj2o7roLuwnKT6sJxHHjv_4GtVBAwypzJ7wkbmYsFtW
+RUN ./ngrok authtoken 2elHFEvV9RNpMIbfPrZjBkpJYIV_5Mc87ggyNwHAbBbRkKsNH
 
 # Set command to run on container start
 CMD ./ngrok http 8888 & python3 -m notebook --ip=0.0.0.0 --allow-root
