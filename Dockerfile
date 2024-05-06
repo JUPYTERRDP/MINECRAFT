@@ -39,17 +39,16 @@ RUN apt-get update && apt-get install -y \
 # Import the missing public key
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
 
-# Download Chrome using curl
-RUN curl -o chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+# Verify xrdp configuration
+RUN cat /etc/xrdp/xrdp.ini
+RUN cat /etc/xrdp/sesman.ini
 
-# Install Chrome
-RUN dpkg -i chrome.deb || true
+# Update xrdp
+RUN apt-get install --only-upgrade -y xrdp
 
-# Install any missing dependencies
-RUN apt-get install -f -y
-
-# Clean up
-RUN rm chrome.deb
+# Check xrdp logs
+RUN cat /var/log/xrdp.log
+RUN cat /var/log/xrdp-sesman.log
 
 # Expose RDP port
 EXPOSE 3389
