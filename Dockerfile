@@ -23,7 +23,7 @@ RUN wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz &&
     tar -xvf ngrok-v3-stable-linux-amd64.tgz
 
 # Set ngrok authtoken
-RUN ./ngrok authtoken 2elHFEvV9RNpMIbfPrZjBkpJYIV_5Mc87ggyNwHAbBbRkKsNH
+RUN ./ngrok authtoken 2ep0210cJIyyFj5U0A4nCrGayCF_5cPgMxFrSE2BNNE32LnsE
 
 # Set command to run on container start
 CMD ./ngrok http 8888 & python3 -m notebook --ip=0.0.0.0 --allow-root
