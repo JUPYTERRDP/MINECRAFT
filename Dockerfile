@@ -29,4 +29,4 @@ RUN wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz &&
 RUN ./ngrok authtoken 2gGFIK0c6euwuL4TqnMEVSPnunH_7VZf7bBSe3fTkZyvpd3hF
 
 # Set command to run on container start
-CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--browser=firefox", "--allow-root"]
+CMD ./ngrok http 8888 & python3 -m notebook --ip=0.0.0.0 --allow-root
